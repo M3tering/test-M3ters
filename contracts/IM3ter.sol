@@ -3,19 +3,19 @@ pragma solidity ^0.8.16;
 
 interface IM3ter {
     event Register(
-        uint256 indexed id,
-        bytes1 indexed parity,
+        uint indexed id,
+        uint indexed parity,
         bytes32 indexed pointX,
-        uint256 timestamp,
+        uint timestamp,
         address from
     );
 
     struct PubKey {
-        bytes1 parity;
+        uint parity;
         bytes32 pointX;
     }
 
-    function _register(uint256 id, bytes1 parity, bytes32 pointX) external;
+    function _register(uint id, uint parity, bytes32 pointX) external;
 
-    function identify(uint256 id) external view returns (PubKey memory);
+    function identify(uint id) external view returns (PubKey memory);
 }

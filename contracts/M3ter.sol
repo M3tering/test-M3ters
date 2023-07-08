@@ -25,7 +25,7 @@ contract M3ter is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    mapping(uint256 => PubKey) private REGISTRY;
+    mapping(uint => PubKey) private REGISTRY;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -50,21 +50,21 @@ contract M3ter is
     }
 
     function _register(
-        uint256 id,
-        bytes1 parity,
+        uint id,
+        uint parity,
         bytes32 pointX
     ) public onlyRole(MINTER_ROLE) {
-        if (id == uint256(0)) {
+        if (id == uint(0)) {
             id = _idCounter.current();
             _idCounter.increment();
             _safeMint(msg.sender, id);
         }
         require(_exists(id), "M3ter: can't register ID that doesn't exist");
-        REGISTRY[id] = PubKey(parity, pointX);
         emit Register(id, parity, pointX, block.timestamp, msg.sender);
+        REGISTRY[id] = PubKey(parity, pointX);
     }
 
-    function identify(uint256 id) external view returns (PubKey memory) {
+    function identify(uint id) external view returns (PubKey memory) {
         require(_exists(id), "M3ter: device doesn't exist");
         return REGISTRY[id];
     }
@@ -74,12 +74,11 @@ contract M3ter is
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
     // The following functions are overrides required by Solidity.
-
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 id,
-        uint256 batchSize
+        uint id,
+        uint batchSize
     ) internal override(ERC721Upgradeable, ERC721EnumerableUpgradeable) {
         super._beforeTokenTransfer(from, to, id, batchSize);
     }
