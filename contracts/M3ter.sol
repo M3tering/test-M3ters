@@ -20,13 +20,12 @@ contract M3ter is
     UUPSUpgradeable
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter private _tokenIdCounter;
+    CountersUpgradeable.Counter private _idCounter;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    // map id -> metadata
-    mapping(uint256 => bytes32) private REGISTRY;
+    mapping(uint256 => PubKey) private REGISTRY;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -43,7 +42,7 @@ contract M3ter is
         _grantRole(MINTER_ROLE, msg.sender);
         _grantRole(UPGRADER_ROLE, msg.sender);
 
-        _tokenIdCounter.increment();
+        _idCounter.increment();
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -51,26 +50,23 @@ contract M3ter is
     }
 
     function _register(
-        uint256 tokenId,
-        bytes32 pbk
+        uint256 id,
+        bytes1 parity,
+        bytes32 pointX
     ) public onlyRole(MINTER_ROLE) {
-        if (tokenId == uint256(0)) {
-            tokenId = _tokenIdCounter.current();
-            _tokenIdCounter.increment();
-            _safeMint(msg.sender, tokenId);
+        if (id == uint256(0)) {
+            id = _idCounter.current();
+            _idCounter.increment();
+            _safeMint(msg.sender, id);
         }
-        require(
-            _exists(tokenId),
-            "M3ter: cann't register ID that doesn't exist"
-        );
-        REGISTRY[tokenId] = pbk;
-        emit Register(tokenId, pbk, block.timestamp, msg.sender);
+        require(_exists(id), "M3ter: can't register ID that doesn't exist");
+        REGISTRY[id] = PubKey(parity, pointX);
+        emit Register(id, parity, pointX, block.timestamp, msg.sender);
     }
 
-    function identify(uint256 tokenId) external view returns (bytes32) {
-        bytes32 pbk =  REGISTRY[tokenId];
-        require(pbk != bytes32(0), "M3ter: invalid tokenID");
-        return pbk;
+    function identify(uint256 id) external view returns (PubKey memory) {
+        require(_exists(id), "M3ter: device doesn't exist");
+        return REGISTRY[id];
     }
 
     function _authorizeUpgrade(
@@ -82,10 +78,10 @@ contract M3ter is
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 tokenId,
+        uint256 id,
         uint256 batchSize
     ) internal override(ERC721Upgradeable, ERC721EnumerableUpgradeable) {
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+        super._beforeTokenTransfer(from, to, id, batchSize);
     }
 
     function supportsInterface(
