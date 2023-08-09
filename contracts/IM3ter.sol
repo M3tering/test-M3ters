@@ -2,6 +2,11 @@
 pragma solidity ^0.8.16;
 
 interface IM3ter {
+    error NonexistentM3ter();
+    error TransferError();
+    error Unauthorized();
+    error InputIsZero();
+
     event Register(
         uint256 indexed tokenId,
         bytes32 indexed deviceId,
@@ -9,9 +14,17 @@ interface IM3ter {
         address from
     );
 
+    event Claim(
+        address indexed to,
+        uint256 indexed amount,
+        uint256 indexed timestamp
+    );
+
+    function mint() external;
+
+    function _setMintFee(uint256 amount) external;
+
     function _register(uint256 tokenId, bytes32 deviceId) external;
 
-    function identify(uint256 tokenId) external view returns (bytes32);
-
-    function safeMint() external payable;
+    function _claim(uint256 amountOutMin, uint256 deadline) external;
 }
