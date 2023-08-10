@@ -2,10 +2,10 @@
 pragma solidity ^0.8.16;
 
 interface IM3ter {
-    error NonexistentM3ter();
-    error ApprovalFailed();
-    error TransferError();
     error InputIsZero();
+    error TransferError();
+    error ApprovalFailed();
+    error NonexistentM3ter();
 
     event Register(
         uint256 indexed tokenId,
