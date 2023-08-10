@@ -3,8 +3,8 @@ pragma solidity ^0.8.16;
 
 interface IM3ter {
     error NonexistentM3ter();
+    error ApprovalFailed();
     error TransferError();
-    error Unauthorized();
     error InputIsZero();
 
     event Register(

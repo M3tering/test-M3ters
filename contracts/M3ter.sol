@@ -45,7 +45,7 @@ contract M3ter is XRC721, IM3ter {
     function _claim(uint256 amountOutMin, uint256 deadline) external onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 amountIn = DAI.balanceOf(address(this));
         if (amountIn < 1) revert InputIsZero();
-        if (!DAI.approve(address(MIMO), amountIn)) revert Unauthorized();
+        if (!DAI.approve(address(MIMO), amountIn)) revert ApprovalFailed();
 
         address[] memory path = new address[](2);
         path[0] = address(DAI);
