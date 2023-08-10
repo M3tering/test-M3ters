@@ -1,1 +1,1 @@
-# Switch-M3ters
+# M3ters

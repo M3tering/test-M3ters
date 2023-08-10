@@ -36,38 +36,29 @@ contract M3ter is XRC721, IM3ter {
         mintFee = amount;
     }
 
-    function _register(
-        uint256 tokenId,
-        bytes32 deviceId
-    ) external onlyRole(REGISTRAR_ROLE) {
+    function _register(uint256 tokenId, bytes32 deviceId) external onlyRole(REGISTRAR_ROLE) {
         if (!_exists(tokenId)) revert NonexistentM3ter();
         emit Register(tokenId, deviceId, block.timestamp, msg.sender);
         registry[tokenId] = deviceId;
     }
 
-    function _claim(
-        uint256 amountOutMin,
-        uint256 deadline
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function _claim(uint256 amountOutMin, uint256 deadline) external onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 amountIn = DAI.balanceOf(address(this));
         if (amountIn < 1) revert InputIsZero();
         if (!DAI.approve(address(MIMO), amountIn)) revert Unauthorized();
 
+        address[] memory path = new address[](2);
+        path[0] = address(DAI);
+        path[1] = 0x1CbAd85Aa66Ff3C12dc84C5881886EEB29C1bb9b; // TODO: added DePIN token address
+
         MIMO.swapExactTokensForTokensSupportingFeeOnTransferTokens(
             amountIn,
             amountOutMin,
-            _swapPath(),
+            path,
             msg.sender,
             deadline
         );
 
         emit Claim(msg.sender, amountIn, block.timestamp);
-    }
-
-    function _swapPath() internal pure returns (address[] memory) {
-        address[] memory path = new address[](2);
-        path[0] = address(DAI);
-        path[1] = 0x1CbAd85Aa66Ff3C12dc84C5881886EEB29C1bb9b; // TODO: added DePIN token address
-        return path;
     }
 }
