@@ -13,9 +13,5 @@ interface IM3ter {
 
     function mint() external;
 
-    function _setMintFee(uint256 amount) external;
-
     function _register(uint256 tokenId, bytes32 deviceId) external;
-
-    function _claim(uint256 amountIn, uint256 amountOutMin, uint256 deadline) external;
 }
