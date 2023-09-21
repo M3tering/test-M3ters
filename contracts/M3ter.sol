@@ -17,6 +17,9 @@ contract M3ter is XRC721, IM3ter {
     mapping(uint256 => bytes32) public registry;
 
     constructor() ERC721("M3ter", "M3R") {
+        if (address(SLX) == address(0)) revert();
+        if (address(DAI) == address(0)) revert();
+        if (address(MIMO) == address(0)) revert();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(REGISTRAR_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
