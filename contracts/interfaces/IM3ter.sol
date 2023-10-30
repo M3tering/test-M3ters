@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
+import "@openzeppelin/contracts@4.9.3/token/ERC721/IERC721.sol";
 
-interface IM3ter {
+interface IM3ter is IERC721 {
     error ZeroAddress();
     error NonexistentM3ter();
 
