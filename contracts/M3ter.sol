@@ -38,11 +38,11 @@ contract M3ter is XRC721, IM3ter {
 
     function _register(
         uint256 tokenId,
-        bytes32 deviceId
+        bytes32 publicKey
     ) external onlyRole(REGISTRAR_ROLE) {
         if (!_exists(tokenId)) revert NonexistentM3ter();
-        emit Register(tokenId, deviceId, block.timestamp, msg.sender);
-        registry[tokenId] = deviceId;
+        emit Register(tokenId, publicKey, block.timestamp, msg.sender);
+        registry[tokenId] = publicKey;
     }
 
     function _claim(
