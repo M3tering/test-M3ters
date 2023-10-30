@@ -8,7 +8,7 @@ interface IM3ter is IERC721 {
 
     event Register(
         uint256 indexed tokenId,
-        bytes32 indexed deviceId,
+        bytes32 indexed publicKey,
         uint256 timestamp,
         address from
     );
@@ -17,7 +17,7 @@ interface IM3ter is IERC721 {
 
     function _setMintFee(uint256 amount) external;
 
-    function _register(uint256 tokenId, bytes32 deviceId) external;
+    function _register(uint256 tokenId, bytes32 publicKey) external;
 
     function _claim(uint256 amountIn, uint256 amountOutMin, uint256 deadline) external;
 }
