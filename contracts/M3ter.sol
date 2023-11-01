@@ -14,7 +14,8 @@ contract M3ter is XRC721, IM3ter {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    mapping(uint256 => bytes32) public registry;
+    mapping(uint256 => bytes32) public tokenRegistry;
+    mapping(bytes32 => uint256) public keyDirectory;
 
     constructor() ERC721("M3ter", "M3R") {
         if (address(DAI2SLX.MIMO) == address(0)) revert ZeroAddress();
@@ -42,7 +43,8 @@ contract M3ter is XRC721, IM3ter {
     ) external onlyRole(REGISTRAR_ROLE) {
         if (!_exists(tokenId)) revert NonexistentM3ter();
         emit Register(tokenId, publicKey, block.timestamp, msg.sender);
-        registry[tokenId] = publicKey;
+        tokenRegistry[tokenId] = publicKey;
+        keyDirectory[publicKey] = tokenId;
     }
 
     function _claim(
