@@ -20,6 +20,7 @@ contract TestM3ter is XRC721, IM3ter {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(REGISTRAR_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
+        _tokenIdCounter.increment();
     }
 
     function mint() external onlyRole(REGISTRAR_ROLE) whenNotPaused {
