@@ -7,13 +7,13 @@ import "./XRC721.sol";
 
 /// @custom:security-contact info@whynotswitch.com
 contract TestM3ter is XRC721, IM3ter {
-    bytes32 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
+    uint256 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    mapping(uint256 => bytes32) public tokenRegistry;
-    mapping(bytes32 => uint256) public keyDirectory;
+    mapping(uint256 => uint256) public tokenRegistry;
+    mapping(uint256 => uint256) public keyDirectory;
 
     constructor() ERC721("M3ter", "M3R") {
 
@@ -30,7 +30,7 @@ contract TestM3ter is XRC721, IM3ter {
 
     function _register(
         uint256 tokenId,
-        bytes32 publicKey
+        uint256 publicKey
     ) external onlyRole(REGISTRAR_ROLE) {
         if (!_exists(tokenId)) revert NonexistentM3ter();
         emit Register(tokenId, publicKey, block.timestamp, msg.sender);

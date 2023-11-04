@@ -7,12 +7,12 @@ interface IM3ter is IERC721 {
 
     event Register(
         uint256 indexed tokenId,
-        bytes32 indexed publicKey,
+        uint256 indexed publicKey,
         uint256 timestamp,
         address from
     );
 
     function mint() external;
 
-    function _register(uint256 tokenId, bytes32 publicKey) external;
+    function _register(uint256 tokenId, uint256 publicKey) external;
 }
