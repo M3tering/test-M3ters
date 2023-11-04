@@ -7,7 +7,7 @@ import "./XRC721.sol";
 
 /// @custom:security-contact info@whynotswitch.com
 contract TestM3ter is XRC721, IM3ter {
-    uint256 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
+    bytes32 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
