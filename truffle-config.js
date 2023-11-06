@@ -10,7 +10,7 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
     testnet: {
-      provider: () => new HDWalletProvider(IOTEX_PRIVATE_KEY, "https://babel-api.iotex.io", 0, 2),
+      provider: () => new HDWalletProvider(IOTEX_PRIVATE_KEY, "https://babel-api.testnet.iotex.io", 0, 2),
       network_id: 4690,    // IOTEX mainnet chain id 4689, testnet is 4690
       gas: 8500000,
       gasPrice: 1000000000000,
